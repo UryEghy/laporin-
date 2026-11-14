@@ -37,14 +37,6 @@ if (isset($_POST['masuk'])) {
             }
             exit;
         } else {
-            // [PERBAIKAN #1] Di kode lama, setelah "} else {" ada sisa kode:
-            //   - setcookie(...) yang menghapus cookie
-            //   - blok if ($user['role'] == 'admin') ... else header("Location: admin/dashboard.php") + exit;
-            //   - "} else {" kedua, lalu "}" kelebihan
-            // Itu menyebabkan PARSE ERROR (kurung tidak seimbang), sehingga login.php tidak bisa jalan.
-            // Redirect user ke "admin/dashboard.php" juga salah (folder yang benar: user/dashboard.php),
-            // dan redirect itu sudah ada di atas (di dalam if login berhasil).
-            // Jadi blok sisa itu dihapus, dan else ini cukup menampilkan pesan gagal login.
             $pesan = "<div class='alert alert-danger'>Email atau password salah!</div>";
         }
         $stmt->close();
