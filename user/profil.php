@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Pastikan hanya mahasiswa yang bisa akses
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'mahasiswa') {
     header("Location: ../login.php");
     exit;
@@ -34,7 +33,7 @@ if (isset($_POST['update_profil'])) {
                     // Buat nama file unik agar tidak bentrok
                     $nama_file_baru = uniqid() . '.' . $ekstensi;
                     
-                    // Folder penyimpanan (pastikan folder 'uploads/' sudah ada di root project)
+                    // Folder penyimpanan
                     $folder_tujuan = '../uploads/';
                     
                     if (!is_dir($folder_tujuan)) {
@@ -112,8 +111,7 @@ $foto_profil = (!empty($user_data['foto']) && file_exists('../uploads/' . $user_
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
 </head>
-<body class="bg-light">
-    <!-- Navbar User (Sesuaikan dengan navbar dashboard Anda) -->
+<body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold" href="dashboard.php">lapor.in (Mahasiswa)</a>

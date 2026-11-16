@@ -12,12 +12,28 @@ $pesan = "";
 
 if (isset($_POST['kirim'])) {
     $user_id = $_SESSION['user_id'];
-    $fasilitas_id = $_POST['fasilitas_id'];
+    $nama_fasilitas = trim($_POST['nama_fasilitas']);
+    $lokasi = trim($_POST['lokasi']);
     $judul = trim($_POST['judul']);$deskripsi = trim($_POST['deskripsi']);$status = 'menunggu';
 
-    if ($fasilitas_id == "" || $judul == "" || $deskripsi == "") {
+    if ($nama_fasilitas == "" || $lokasi == "" || $judul == "" || $deskripsi == "") {
         $pesan = "<div class='alert alert-danger'>Semua kolom wajib diisi!</div>";
     } else {
+        $cek = $connect->prepare("SELECT id FROM fasilitas WHERE LOWER(nama_fasilitas) = LOWER(?) AND LOWER(lokasi) = LOWER(?) LIMIT 1");
+        $cek->bind_param("ss", $nama_fasilitas, $lokasi);
+        $cek->execute();
+        $row_f = $cek->get_result()->fetch_assoc();
+        $cek->close();
+
+        if ($row_f) {
+            $fasilitas_id = $row_f['id'];
+        } else {
+            $ins = $connect->prepare("INSERT INTO fasilitas (nama_fasilitas, lokasi) VALUES (?, ?)");
+            $ins->bind_param("ss", $nama_fasilitas, $lokasi);
+            $ins->execute();
+            $fasilitas_id = $connect->insert_id;
+            $ins->close();
+        }
         $query = "INSERT INTO laporan (user_id, fasilitas_id, judul, deskripsi, status) VALUES (?, ?, ?, ?, ?)";
         $stmt = $connect->prepare($query);
         $stmt->bind_param("iisss", $user_id, $fasilitas_id,$judul, $deskripsi,$status);
@@ -29,8 +45,6 @@ if (isset($_POST['kirim'])) {
         $stmt->close();
     }
 }
-
-$fasilitas_result =$connect->query("SELECT * FROM fasilitas ORDER BY nama_fasilitas ASC");
 
 $base = "../";
 include '../header.php';
@@ -47,17 +61,14 @@ include '../header.php';
 
                 <form method="POST" action="">
                     <div class="mb-3">
-                        <label class="form-label">Pilih Fasilitas & Lokasi</label>
-                        <select name="fasilitas_id" class="form-select" required>
-                            <option value="">-- Pilih Fasilitas --</option>
-                            <?php while ($f =$fasilitas_result->fetch_assoc()): ?>
-                                <option value="<?= $f['id']; ?>"><?= htmlspecialchars($f['nama_fasilitas']); ?> (<?= htmlspecialchars($f['lokasi']); ?>)</option>
-                            <?php endwhile; ?>
-                        </select>
+                        <label class="form-label">Nama Fasilitas</label>
+                        <input type="text" name="nama_fasilitas" class="form-control" placeholder="Contoh: AC, Proyektor, Kursi" required>
                     </div>
                     <div class="mb-3">
-                        <!-- [PERBAIKAN #3] Tadinya: <label class"form-label"> (kurang tanda "=").
-                             Akibatnya class Bootstrap tidak terpasang pada label ini. -->
+                        <label class="form-label">Lokasi</label>
+                        <input type="text" name="lokasi" class="form-control" placeholder="Contoh: Pattimura III 3-D" required>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Judul Laporan</label>
                         <input type="text" name="judul" class="form-control" placeholder="Contoh: AC Kelas Rusak / Proyektor Mati" required>
                     </div>

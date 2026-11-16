@@ -54,7 +54,7 @@ if (isset($_POST['masuk'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100 m-0">
+<body class="d-flex justify-content-center align-items-center vh-100 m-0">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
