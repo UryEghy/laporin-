@@ -9,7 +9,7 @@ if (isset($_SESSION['pesan_sukses'])) {
     unset($_SESSION['pesan_sukses']);
 }
 
-$email_ingat = isset($_COOKIE['email_ingat']) ? $_COOKIE['email_ingat'] : "";
+$email_ingat = isset($_COOKIE['ingat_email']) ? $_COOKIE['ingat_email'] : "";
 
 if (isset($_POST['masuk'])) {
     $email = trim($_POST['email']);
@@ -29,7 +29,11 @@ if (isset($_POST['masuk'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['nama'] = $user['nama'];
             $_SESSION['role'] = $user['role'];
-
+        if (isset($_POST['ingat'])) {
+                setcookie("ingat_email", $email, time() + (30 * 24 * 60 * 60), '/');
+            } else {
+                setcookie("ingat_email", '', time() - 3600, '/');
+            }
            $_SESSION['notif_sukses'] = "Selamat datang kembali, " . $user['nama'] . "!";
 
             if ($user['role'] == 'admin') {

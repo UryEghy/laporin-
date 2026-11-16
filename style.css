@@ -10,3 +10,33 @@ body{
 .navbar-brand{
     letter-spacing: 0.5px;
 }
+
+:root {
+    --warna-background: #f9cde8;   
+    --warna-header:     #f786b3;  
+    --warna-teks-header:#ffffff;   
+    --warna-tombol:     #f79dca;  
+    --warna-tombol-hover:#cf3384;  
+}
+
+.navbar.bg-dark {
+    background-color: var(--warna-header) !important;
+}
+.navbar .navbar-brand,
+.navbar .nav-link {
+    color: var(--warna-teks-header);
+}
+.navbar .nav-link.text-danger {
+    color: #f03939 !important;   
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--warna-tombol);
+    --bs-btn-border-color: var(--warna-tombol);
+    --bs-btn-hover-bg: var(--warna-tombol-hover);
+    --bs-btn-hover-border-color: var(--warna-tombol-hover);
+    --bs-btn-active-bg: var(--warna-tombol-hover);
+    --bs-btn-active-border-color: var(--warna-tombol-hover);
+    --bs-btn-disabled-bg: var(--warna-tombol);
+    --bs-btn-disabled-border-color: var(--warna-tombol);
+}
