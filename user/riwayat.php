@@ -50,7 +50,8 @@ $result = $stmt->get_result();
     </div>
 
     <div class="card shadow-sm p-3">
-        <div class="table-responsive">
+        <input class="form-control" id="myInput" type="text" placeholder="Search...">
+        <div class="table-responsive" id="myTable">
             <table class="table table-bordered align-middle">
                 <thead class="table-light">
                     <tr>
@@ -75,13 +76,12 @@ $result = $stmt->get_result();
                                 <td><?= htmlspecialchars($row['deskripsi']); ?></td>
                                 <td>
                                     <?php 
-                                        $badge = 'secondary';
-                                        if ($row['status'] == 'menunggu') $badge = 'warning';
-                                        elseif ($row['status'] == 'diterima') $badge = 'info';
-                                        elseif ($row['status'] == 'diproses') $badge = 'primary';
-                                        elseif ($row['status'] == 'selesai') $badge = 'success';
+                                        if ($row['status'] == 'menunggu');
+                                        elseif ($row['status'] == 'diterima'); 
+                                        elseif ($row['status'] == 'diproses'); 
+                                        elseif ($row['status'] == 'selesai'); 
                                     ?>
-                                    <span class="badge bg-<?= $badge; ?>"><?= ucfirst($row['status']); ?></span>
+                                    <span><?= ucfirst($row['status']); ?></span>
                                 </td>
                                 <td><small><?= $row['created_at']; ?></small></td>
                             </tr>
@@ -96,6 +96,17 @@ $result = $stmt->get_result();
         </div>
     </div>
 </div>
+
+<script>
+        $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        });
+        });
+</script>
 
 <?php 
 $stmt->close();

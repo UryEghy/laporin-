@@ -3,6 +3,12 @@ session_start();
 include 'koneksi.php';
 
 $pesan = "";
+
+if (isset($_SESSION['pesan_sukses'])) {
+    $pesan = '<div class="alert alert-success alert-dismissible fade show" role="alert">' . $_SESSION['pesan_sukses'] . '</div>';
+    unset($_SESSION['pesan_sukses']);
+}
+
 $email_ingat = isset($_COOKIE['email_ingat']) ? $_COOKIE['email_ingat'] : "";
 
 if (isset($_POST['masuk'])) {
@@ -24,11 +30,7 @@ if (isset($_POST['masuk'])) {
             $_SESSION['nama'] = $user['nama'];
             $_SESSION['role'] = $user['role'];
 
-            if (isset($_POST['ingat'])) {
-                setcookie("email_ingat", $email, time() + (30 * 24 * 60 * 60), "/");
-            } else {
-                setcookie("email_ingat", "", time() - 3600, "/");
-            }
+           $_SESSION['notif_sukses'] = "Selamat datang kembali, " . $user['nama'] . "!";
 
             if ($user['role'] == 'admin') {
                 header("Location: admin/laporan.php");
@@ -71,6 +73,9 @@ if (isset($_POST['masuk'])) {
                         <div class="form-check mb-3">
                             <input type="checkbox" name="ingat" class="form-check-input" id="ingat" <?= $email_ingat != "" ? "checked" : ""; ?>>
                             <label class="form-check-label" for="ingat">Ingat Email Saya</label>
+                        </div>
+                        <div class="mb-3 text-end">
+                            <small><a href="lupa_password.php" class="text-decoration-none">Lupa Password?</a></small>
                         </div>
                         <button type="submit" name="masuk" class="btn btn-primary w-100 py-2">Masuk</button>
                     </form>

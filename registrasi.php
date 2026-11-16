@@ -29,7 +29,9 @@ if (isset($_POST['daftar'])) {
             $stmt->bind_param("ssss", $nama,$email, $hashed_password,$role);
 
             if ($stmt->execute()) {
-                $pesan = "<div class='alert alert-success'>Daftar berhasil! Silakan <a href='login.php'>Login</a>.</div>";
+                $_SESSION['pesan_sukses']= "Pendaftaran berhasil! Silakan masuk menggunakan akun Anda.";
+                header("Location: login.php");
+                exit;
             } else {
                 $pesan = "<div class='alert alert-danger'>Gagal mendaftar. Coba lagi.</div>";
             }

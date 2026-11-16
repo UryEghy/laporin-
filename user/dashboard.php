@@ -11,6 +11,7 @@ include '../header.php';
 
 <div class="container mt-5">
     <div class="text-center mb-5">
+        <?=$_SESSION['nama'];?>
         <h2>Selamat Datang, <b><?= htmlspecialchars($_SESSION['nama']); ?></b>!</h2>
         <p class="text-muted">Mau melaporkan fasilitas kampus yang rusak hari ini?</p>
     </div>
