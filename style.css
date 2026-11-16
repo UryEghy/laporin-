@@ -1,0 +1,14 @@
+body{
+    background-image: url('UI\ Buka\ Lowongan\ Jadi\ Dosen\ Tetap\,\ Cek\ Syaratnya\ di\ Sini.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.card{
+    border: none;
+    border-radius: 10px;
+}
+
+.navbar-brand{
+    letter-spacing: 0.5px;
+}

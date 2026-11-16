@@ -5,6 +5,8 @@
     <title>lapor.in</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $base; ?>style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
@@ -26,6 +28,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-danger" href="<?= $base; ?>logout.php">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= $base; ?>user/profil.php">Profil Saya</a>
                     </li>
                 </ul>
             </div>
