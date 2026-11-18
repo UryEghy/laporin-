@@ -10,7 +10,7 @@ include '../koneksi.php';
 $user_id = $_SESSION['user_id'];
 $pesan = "";
 
-// 1. Proses Update Profil (Nama & Foto)
+//Proses Update Profil (Nama & Foto)
 if (isset($_POST['update_profil'])) {
     $nama_baru = trim($_POST['nama']);
 
@@ -93,7 +93,7 @@ if (isset($_POST['update_profil'])) {
 }
 
 
-// 2. Ambil data user terbaru dari database
+//Ambil data user terbaru dari database
 $query_user = "SELECT * FROM users WHERE id = ?";
 $stmt_user = $connect->prepare($query_user);
 $stmt_user->bind_param("i", $user_id);
