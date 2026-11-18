@@ -2,50 +2,41 @@
 session_start();
 include 'koneksi.php';
 
-$pesan = "";
+$error = "";
+$email_ingat = "";
 
-if (isset($_SESSION['pesan_sukses'])) {
-    $pesan = '<div class="alert alert-success alert-dismissible fade show" role="alert">' . $_SESSION['pesan_sukses'] . '</div>';
-    unset($_SESSION['pesan_sukses']);
-}
+if(isset($_POST['masuk'])){
+   $email = $_POST['email'];
+   $password = $_POST['password'];
+   
+   //ambil data user berdasarkan email
+   $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $connect->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $hasil = $stmt->get_result();
 
-$email_ingat = isset($_COOKIE['ingat_email']) ? $_COOKIE['ingat_email'] : "";
-
-if (isset($_POST['masuk'])) {
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
-
-    if ($email == "" || $password == "") {
-        $pesan = "<div class='alert alert-danger'>Email dan password wajib diisi!</div>";
-    } else {
-        $query = "SELECT id, nama, password, role FROM users WHERE email = ?";
-        $stmt = $connect->prepare($query);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $hasil = $stmt->get_result();
+    if($hasil->num_rows === 1){
         $user = $hasil->fetch_assoc();
-
-        if ($user && password_verify($password, $user['password'])) {
+        if(password_verify($password, $user['password'])){
+            
+        //login berhasil
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['nama'] = $user['nama'];
             $_SESSION['role'] = $user['role'];
-        if (isset($_POST['ingat'])) {
-                setcookie("ingat_email", $email, time() + (30 * 24 * 60 * 60), '/');
-            } else {
-                setcookie("ingat_email", '', time() - 3600, '/');
-            }
-           $_SESSION['notif_sukses'] = "Selamat datang kembali, " . $user['nama'] . "!";
-
-            if ($user['role'] == 'admin') {
+            
+            if($user['role'] == 'admin'){
                 header("Location: admin/laporan.php");
+                exit;
             } else {
                 header("Location: user/dashboard.php");
+                exit;
             }
-            exit;
         } else {
-            $pesan = "<div class='alert alert-danger'>Email atau password salah!</div>";
+            $error = "Password yang Anda masukkan salah.";
         }
-        $stmt->close();
+    } else {
+        $error = "Email tidak terdaftar.";
     }
 }
 ?>
@@ -64,7 +55,7 @@ if (isset($_POST['masuk'])) {
             <div class="col-md-5">
                 <div class="card shadow-sm p-4 border-0">
                     <h3 class="text-center mb-4 fw-bold">Masuk <b>lapor.in</b></h3>
-                    <?= $pesan; ?>
+                    <?php if (!empty($error)) echo "<div class='alert alert-danger py-2'>$error</div>"; ?>
                     <form method="POST" action="">
                         <div class="mb-3">
                             <label class="form-label">Email</label>
