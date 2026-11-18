@@ -89,13 +89,13 @@ $result = $connect->query($query);
                 </div>
             </div>
             <div class="col-6 col-md mb-2">
-                <div class="card shadow-sm p-3 h-100 border-info border-top border-3">
+                <div class="card shadow-sm p-3 h-100 border-warning border-top border-3">
                     <small class="text-muted">Menunggu</small>
-                    <h3 class="mb-0"><? = $statistik['menunggu']; ?></h3>
+                    <h3 class="mb-0"><?= $statistik['menunggu']; ?></h3>
                 </div>
             </div>
             <div class="col-6 col-md mb-2">
-                <div class="card shadow-sm p-3 h-100 border-warning border-top border-3">
+                <div class="card shadow-sm p-3 h-100 border-info border-top border-3">
                     <small class="text-muted">Diterima</small>
                     <h3 class="mb-0"><?= $statistik['diterima']; ?></h3>
                 </div>

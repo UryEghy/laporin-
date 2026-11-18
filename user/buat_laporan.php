@@ -7,8 +7,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'mahasiswa') {
 }
 
 include '../koneksi.php';
+include '../fungsi.php';
 
 $pesan = "";
+$old = ['nama_fasilitas' => '', 'lokasi' => '', 'judul' => '', 'deskripsi' => ''];
 
 if (isset($_POST['kirim'])) {
     $user_id = $_SESSION['user_id'];
@@ -16,9 +18,16 @@ if (isset($_POST['kirim'])) {
     $lokasi = trim($_POST['lokasi']);
     $judul = trim($_POST['judul']);$deskripsi = trim($_POST['deskripsi']);$status = 'menunggu';
 
+    $old = ['nama_fasilitas' => $nama_fasilitas, 'lokasi' => $lokasi, 'judul' => $judul, 'deskripsi' => $deskripsi];
+
     if ($nama_fasilitas == "" || $lokasi == "" || $judul == "" || $deskripsi == "") {
         $pesan = "<div class='alert alert-danger'>Semua kolom wajib diisi!</div>";
     } else {
+        $foto = simpanFotoLaporan($_FILES['foto'], $error_foto);
+
+        if($error_foto != ""){
+            $pesan = "<div class ='alert alert-danger'>" . $error_foto . "</div>";
+        }else{
         $cek = $connect->prepare("SELECT id FROM fasilitas WHERE LOWER(nama_fasilitas) = LOWER(?) AND LOWER(lokasi) = LOWER(?) LIMIT 1");
         $cek->bind_param("ss", $nama_fasilitas, $lokasi);
         $cek->execute();
@@ -34,15 +43,19 @@ if (isset($_POST['kirim'])) {
             $fasilitas_id = $connect->insert_id;
             $ins->close();
         }
-        $query = "INSERT INTO laporan (user_id, fasilitas_id, judul, deskripsi, status) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $connect->prepare($query);
-        $stmt->bind_param("iisss", $user_id, $fasilitas_id,$judul, $deskripsi,$status);
 
-        if ($stmt->execute()) {$pesan = "<div class='alert alert-success'>Laporan berhasil dikirim! <a href='riwayat.php'>Lihat Riwayat</a></div>";
+        $query = "INSERT INTO laporan (user_id, fasilitas_id, judul, deskripsi, foto, status) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $connect->prepare($query);
+        $stmt->bind_param("iissss", $user_id, $fasilitas_id,$judul, $deskripsi, $foto, $status);
+
+        if ($stmt->execute()) {
+            $pesan = "<div class='alert alert-success'>Laporan berhasil dikirim! <a href='riwayat.php'>Lihat Riwayat</a></div>";
+            $old = ['nama_fasilitas' => '', 'lokasi' => '', 'judul' => '', 'deskripsi' => ''];
         } else {
             $pesan = "<div class='alert alert-danger'>Gagal mengirim laporan. Coba lagi.</div>";
         }
         $stmt->close();
+        }
     }
 }
 
@@ -54,27 +67,32 @@ include '../header.php';
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-sm p-4">
-                <h3 class="mb-3">Buat Laporan Kerusakan</h3>
+                <h3 class="mb-3" >Buat Laporan Kerusakan</h3>
                 <p class="text-muted">Laporkan fasilitas kampus yang mengalami kerusakan agar segera ditindaklanjuti.</p>
                 
                 <?= $pesan; ?>
 
-                <form method="POST" action="">
+                <form method="POST" action="" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label">Nama Fasilitas</label>
-                        <input type="text" name="nama_fasilitas" class="form-control" placeholder="Contoh: AC, Proyektor, Kursi" required>
+                        <input type="text" name="nama_fasilitas" class="form-control" placeholder="Contoh: AC, Proyektor, Kursi" value="<?= htmlspecialchars($old['nama_fasilitas']); ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Lokasi</label>
-                        <input type="text" name="lokasi" class="form-control" placeholder="Contoh: Pattimura III 3-D" required>
+                        <input type="text" name="lokasi" class="form-control" placeholder="Contoh: Pattimura III 3-D" value="<?= htmlspecialchars($old['lokasi']); ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Judul Laporan</label>
-                        <input type="text" name="judul" class="form-control" placeholder="Contoh: AC Kelas Rusak / Proyektor Mati" required>
+                        <input type="text" name="judul" class="form-control" placeholder="Contoh: AC Kelas Rusak / Proyektor Mati" value="<?= htmlspecialchars($old['judul']); ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Deskripsi Kerusakan</label>
-                        <textarea name="deskripsi" class="form-control" rows="4" placeholder="Jelaskan kondisi kerusakan secara detail..." required></textarea>
+                        <textarea name="deskripsi" class="form-control" rows="4" placeholder="Jelaskan kondisi kerusakan secara detail..." required><?= htmlspecialchars($old['deskripsi']); ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Foto Kerusakan (opsional), maks. 10MB</label>
+                        <input type="file" name="foto" class="form-control" accept="image/*">
+                        <small class="text-muted">Kalau muncul error, isian lain tetap tersimpan, hanya foto yang perlu diupload.</small>
                     </div>
                     <button type="submit" name="kirim" class="btn btn-primary w-100">Kirim Laporan</button>
                 </form>
