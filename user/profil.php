@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'mahasiswa') {
 }
 
 include '../koneksi.php';
+include '../header.php';
 
 $user_id = $_SESSION['user_id'];
 $pesan = "";
@@ -112,23 +113,12 @@ $foto_profil = (!empty($user_data['foto']) && file_exists('../uploads/' . $user_
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="dashboard.php">lapor.in (Mahasiswa)</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="dashboard.php">Dashboard</a>
-                <a class="nav-link active fw-bold" href="profil.php">Profil Saya</a>
-                <a class="nav-link text-danger" href="../logout.php">Logout</a>
-            </div>
-        </div>
-    </nav>
-
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-7">
                 <div class="card shadow-sm p-4 border-0">
-                    <h3 class="mb-3 fw-bold">Profil Saya</h3>
-                    <p class="text-muted">Kelola informasi profil dan foto akun Anda.</p>
+                    <h3 class="text-center mb-3 fw-bold">Profil Saya</h3>
+                    <p class="text-center text-muted">Kelola informasi profil dan foto akun Anda.</p>
 
                     <?= $pesan; ?>
 

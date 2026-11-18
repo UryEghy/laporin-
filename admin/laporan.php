@@ -65,6 +65,7 @@ $result = $connect->query($query);
     <link rel="stylesheet" href="../style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
@@ -84,31 +85,31 @@ $result = $connect->query($query);
         <div class="row mb-4 text-center">
             <div class="col-6 col-md mb-2">
                 <div class="card shadow-sm p-3 h-100">
-                    <small class="text-muted">Total Laporan</small>
+                    <small class="text-muted"><i class="bi bi-clipboard-data me-1"></i> Total Laporan</small>
                     <h3 class="mb-0"><?= $total_laporan; ?></h3>
                 </div>
             </div>
             <div class="col-6 col-md mb-2">
                 <div class="card shadow-sm p-3 h-100 border-warning border-top border-3">
-                    <small class="text-muted">Menunggu</small>
+                    <small class="text-muted"><i class="bi bi-hourglass-split text-warning"></i> Menunggu</small>
                     <h3 class="mb-0"><?= $statistik['menunggu']; ?></h3>
                 </div>
             </div>
             <div class="col-6 col-md mb-2">
                 <div class="card shadow-sm p-3 h-100 border-info border-top border-3">
-                    <small class="text-muted">Diterima</small>
+                    <small class="text-muted"><i class="bi bi-envelope-check text-info"></i> Diterima</small>
                     <h3 class="mb-0"><?= $statistik['diterima']; ?></h3>
                 </div>
             </div>
             <div class="col-6 col-md mb-2">
                 <div class="card shadow-sm p-3 h-100 border-primary border-top border-3">
-                    <small class="text-muted">Diproses</small>
+                    <small class="text-muted"><i class="bi bi-tools text-primary"></i> Diproses</small>
                     <h3 class="mb-0"><?= $statistik['diproses']; ?></h3>
                 </div>
             </div>
             <div class="col-6 col-md mb-2">
                 <div class="card shadow-sm p-3 h-100 border-success border-top border-3">
-                    <small class="text-muted">Selesai</small>
+                    <small class="text-muted"><i class="bi bi-check-circle-fill text-success"></i> Selesai</small>
                     <h3 class="mb-0"><?= $statistik['selesai']; ?></h3>
                 </div>
             </div>
