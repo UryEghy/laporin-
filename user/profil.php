@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'mahasiswa') {
 }
 
 include '../koneksi.php';
-include '../header.php';
 
 $user_id = $_SESSION['user_id'];
 $pesan = "";
@@ -93,6 +92,7 @@ if (isset($_POST['update_profil'])) {
     }
 }
 
+
 // 2. Ambil data user terbaru dari database
 $query_user = "SELECT * FROM users WHERE id = ?";
 $stmt_user = $connect->prepare($query_user);
@@ -102,17 +102,11 @@ $user_data = $stmt_user->get_result()->fetch_assoc();
 $stmt_user->close();
 
 $foto_profil = (!empty($user_data['foto']) && file_exists('../uploads/' . $user_data['foto'])) ? '../uploads/' . $user_data['foto'] : 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg';
+
+$base = "../";
+include '../header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Profil Saya - Lapor.in</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-7">
@@ -150,7 +144,6 @@ $foto_profil = (!empty($user_data['foto']) && file_exists('../uploads/' . $user_
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script.js"></script>
-</body>
-</html>
+    <?php
+    include '../footer.php';
+    ?>
